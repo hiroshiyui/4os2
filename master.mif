@@ -69,7 +69,7 @@ lflags += lib pmprintf.lib
 # Targets and explicit rules
 
 all : 4os2.exe jpos2dll.dll option2.exe shralias.exe keystack.exe &
-      4os2h.msg 4os2.inf
+      4os2h.msg 4os2.inf ..\buildlevel.txt
 
 4os2objs = main.obj parser.obj os2init.obj cmds.obj expand.obj eval.obj &
            ea.obj dircmds.obj filecmds.obj syscmds.obj os2cmds.obj      &
