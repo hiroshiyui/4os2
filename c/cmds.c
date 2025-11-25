@@ -170,12 +170,19 @@ int cmds_cmd(int argc, char **argv)
 int findcmd( char *cmd, int eflag )
 {
     static char DELIMS[] = "%10[^    \t;,.\"`\\+=<>|]";
+    char *p;
     int low, high, mid, cond;
-    char szInternalName[12];
+    char szInternalName[16] = {0}; //Needs to be 6 more than longest internal command to account for possible extention
 
-    sscanf( cmd, "%s", szInternalName );
-    if (strstr(strlwr(szInternalName), ".exe"))
+    sscanf( cmd, "%15s", szInternalName );
+    if ( ( p = ext_part( szInternalName )) == NULL )
+            p = NULLSTR;
+    if ((( szInternalName[1] == ':' ) && ((szInternalName[2] == '\\' ) || (szInternalName[2] == '/' ))) ||
+        stristr(szInternalName, ".exe") || stristr(szInternalName, ".btm") ||
+        stristr(szInternalName, ".cmd") || stristr(szInternalName, ".bat") ||
+        stristr(szInternalName, ".com") || (*(executable_ext( p )) != '\0' )) {
         return -1;
+    }
     // set the current compound command character & switch character
     DELIMS[5] = gpIniptr->CmdSep;
     DELIMS[6] = gpIniptr->SwChr;
@@ -202,7 +209,6 @@ int findcmd( char *cmd, int eflag )
             return (((( commands[mid].pflag & CMD_DISABLED) == 0 ) || eflag ) ? mid : -1 );
         }
     }
-
     return -1;
 }
 
