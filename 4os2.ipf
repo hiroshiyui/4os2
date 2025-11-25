@@ -11,10 +11,11 @@
 .nameit symbol=9ver     text='3.09'
 .nameit symbol=10ver    text='3.10'
 .nameit symbol=11ver    text='3.11'
+.nameit symbol=50ver    text='5.00'
 
 .* Use this to reference current version
-.nameit symbol=curver   text='3.11.4'
-.nameit symbol=reldate  text='Aug 2024'
+.nameit symbol=curver   text='5.00.0'
+.nameit symbol=reldate  text='Nov 2025'
 
 :userdoc.
 :docprof toc=12345.
@@ -11255,13 +11256,13 @@ setting for the current session and all child sessions.
 
 :h2 name=TOUCH.TOUCH - Change date and time stamps
 :parml compact tsize=12 break=fit.
-:pt.:hp3.Purpose&colon.:ehp3.:pd.Change a file's date and time stamps.
+:pt.:hp3.Purpose&colon.:ehp3.:pd.Change a file's or directory's date and time stamps.
 .br
 :pt.:hp3.Format&colon.:ehp3.:pd.:hp2.TOUCH [/C /D[acw][mm-dd-yy] /E /F /Q
 /T[acw][hh&colon.mm]]:ehp2. :hp3.file:ehp3. :hp2....:ehp2.
 .br
-:pt.:pd.:hp3.file :ehp3.&colon. One or more files whose date and/or time
-stamps are to be changed.
+:pt.:pd.:hp3.file :ehp3.&colon. One or more files and/or directories whose 
+date and/or time stamps are to be changed.
 :eparml.:lm margin=13.:parml compact tsize=32 break=none.
 :pt.:hp2./C:ehp2.(reate file):pd.:hp2./F:ehp2.(orce read-only files)
 :pt.:hp2./D:ehp2.(ate):pd.:hp2./Q:ehp2.(uiet)
@@ -12016,7 +12017,7 @@ the command line, and %2&amp. means the second and all subsequent arguments.
 Parameters are explained in detail under the
 :link reftype=hd refid=ALIAS.ALIAS:elink. command.
 :p.
-Your copy of 4OS2 includes a sample alias file called :hp1.ALIASES:ehp1.
+Your copy of 4OS2 includes a sample alias file called :hp1.4os2Alias.sample:ehp1.
 which contains several useful aliases and demonstrates many alias techniques.
 See the :link reftype=hd refid=ALIAS.ALIAS:elink. and :link reftype=hd
 refid=UNALIAS.UNALIAS:elink. commands for more information and examples. Also
@@ -18485,7 +18486,7 @@ This page provides settings for the following options&colon.
 :p.
 This section provides a comprehensive list of what's changed since our
 previous major release, version 2.52. Maintenance changes made between
-versions 3.00 and &10ver. are indicated notes in the left margin (such as
+versions 3.00 and &50ver. are indicated notes in the left margin (such as
 :hp2.&4ver.:ehp2.). :hp8.Changes after version &4verprev. were not made by JP 
 Software.:ehp8. 
 :p.
@@ -18542,6 +18543,12 @@ directory tree, with or without filenames, in a variety of formats.
 :p.
 :hp2.What's New - General Features and Enhancements:ehp2.
 :lm margin=1.:parml tsize=10 break=fit.
+:pt.:hp2.&11ver. :ehp2. ¯:pd.Change the 4start.cmd.tpl to 4start.cmd.start.
+It is renamed to 4start.cmd if 4start.cmd doesn't exist. When it is run for 
+the first time you are prompted to either open it in an editor to make your own 
+changes or accept the file as presented without the prompting. You can cancel
+which will then prompt you again on the next startup.
+:pt.:hp2.&11ver. :ehp2. ¯:pd.Add a sample alias list to the distribution.
 :pt.:hp2.&10ver. :ehp2. ¯:pd.The default location for :hp1.JPSTREE.IDX:ehp1. has
 been changed to the 4OS2 installation directory (if writable) or to the root of
 the boot volume. This location is written to the TreePath variable in 4OS2.INI.
@@ -18642,7 +18649,14 @@ through the configuration dialogs.
 :h2 name=NewCommands.Command Changes
 :p.
 :hp2.What's New - Command Changes:ehp2.
-:lm margin=1.:parml tsize=10 break=fit.
+:lm margin=1.:parml tsize=10 break=fit. 
+:pt.:hp2.&50ver.:ehp2. ¯:pd.:link reftype=hd refid=Commands.Commands:elink.&colon. Fix the use of 
+an external command that has the same name as an internal command (e.i. echo.exe now runs the exe 
+not the internal echo)
+:pt.:hp2.&50ver.:ehp2. ¯:pd.:link reftype=hd refid=EXTPROC.EXTPROC:elink.&colon. Provide full path to 
+cmd file on command line generated.
+:pt.:hp2.&11ver.:ehp2. ¯:pd.:link reftype=hd refid=TOUCH.TOUCH:elink.&colon. Adds support for 
+touching directories.
 :pt.:hp2.&10ver.:ehp2. ¯:pd.:link reftype=hd refid=COPY.COPY:elink.&colon. Added /J switch&colon.
 Makes a directory copy behave like CMD. The directory is copied to the target instead of just 
 the files in the directory being copied.
@@ -18878,6 +18892,8 @@ switch to read a file of variables to remove.
 Added or updated the following internal variables (all variables listed are
 new unless otherwise noted)&colon.
 :lm margin=1.:parml tsize=10 break=fit.
+:pt.:hp2.&11ver.:ehp2. ¯:pd.:link reftype=hd refid=_TMSMP._TMSMP:elink.&colon. Added
+enhanced formats.
 :pt.:hp2.&10ver.:ehp2. ¯:pd.:link reftype=hd refid=_TMSMP._TMSMP:elink.&colon. Returns
 the current dat and time (yyyy-mm-dd-hh-mm-ss) The format can be set in the INI using
 TmSmpFmt= the year can be 2 or 4 digits, only "-" is allowed as a separator, time is
@@ -19183,6 +19199,12 @@ passed to 4OS2, and to "tag" error messages with the product name. See the
 :lm margin=1. :parml tsize=10 break=fit .
 
 .* FIXME xref
+:pt.:hp2.&50ver.:ehp2. ¯:pd.:link reftype=hd refid=_@WORDS.@WORDS:elink.[["xxx",]string]&colon. 
+Improve handling of @WORDS when no separator list is included and the beginning of the string is quoted.
+:pt.:hp2.&50ver.:ehp2. ¯:pd.&colon. Correctly display EA size for EAs larger than 32k.
+:pt.:hp2.&50ver.:ehp2. ¯:pd.&colon. Fix a trap on startup where the passed argument is a long pathname.
+:pt.:hp2.&11ver.:ehp2. ¯:pd.:link reftype=hd refid=INI_TmSmpFmt.TmSmpFmt:elink.&colon.
+Correct TmSmpFmt logic
 :pt.:hp2.&11ver.:ehp2. ¯:pd.:link reftype=hd refid=TITLE.TITLE:elink.&colon.
 Avoid title buffer overflow exception.
 
