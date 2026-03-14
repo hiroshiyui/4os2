@@ -403,18 +403,20 @@ static void InitSystemVariables( void )
     // allow 40 file handles
     (void)DosSetMaxFH( 40 );
 
-    // read the info seg for session number & parent PID
-    (void)DosGetInfoSeg( &selGlobalSeg, &selLocalSeg );
+    // Warpine: use DosGetInfoBlocks instead of DosGetInfoSeg to avoid
+    // 16-bit thunk. Provide a static LINFOSEG with session/PID info.
+    {
+        static LINFOSEG warpine_lis;
+        PTIB ptib_init;
+        PPIB ppib_init;
+        DosGetInfoBlocks(&ptib_init, &ppib_init);
+        warpine_lis.pidCurrent = (USHORT)(ppib_init ? ppib_init->pib_ulpid : 42);
+        warpine_lis.sgCurrent = 1;  // single session
+        gpLIS = &warpine_lis;
+    }
 
     // get DBCS ranges
     InitDBCSLead();
-
-    // KLUDGE for WATCOM C problems in converting a pointer to a 16-bit segment.
-    // We have to convert to a long first, then store it, otherwise Watcom C
-    // converts it to 16-bit and immediately back to 32-bit
-
-    *pulW16 = ( selLocalSeg << 16 );
-    gpLIS = (PLINFOSEG)(void * _Seg16)pWork16;
 
     (void)DosGetInfoBlocks( &ptib, &ppib );
 
